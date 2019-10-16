@@ -1,4 +1,4 @@
-[GDrive]
-type = drive
-scope = drive
-token = {"access_token":"{{ gdrive_access_token }}","expiry":"{{ gdrive_expiry_date }}"}
+[{{ rclone_config_name }}]
+type = {{ rclone_config_type }}
+scope = {{ rclone_config_scope }}
+token = {"access_token":"{{ gdrive_access_token }}","token_type":"Bearer","refresh_token":"{{ gdrive_refresh_token }}","expiry":"{{ gdrive_expiry_date }}"}
