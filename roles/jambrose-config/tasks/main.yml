@@ -33,6 +33,7 @@
     name: "{{ item }}"
     group: users
     groups: wheel
+    shell: /bin/bash
     password: "{{ local_unix_password }}"
   loop:
     - "{{ local_unix_user }}"
