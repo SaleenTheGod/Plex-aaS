@@ -13,10 +13,13 @@
         name: "*"
         state: latest
       become: true
-    - name: Ensure vim is installed
+    - name: Ensure required packages are installed
       apt:
-        name: "vim"
-        state: latest
+        name: "{{ item }}"
+        state: present
+      loop:
+        - vim
+        - aptitude
       become: true
     - name: Install plex debian file
       apt:
