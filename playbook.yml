@@ -4,7 +4,7 @@
   vars:
     plex_ubuntu_deb_url: https://downloads.plex.tv/plex-media-server-new/1.18.0.1944-f2cae8d6b/debian/plexmediaserver_1.18.0.1944-f2cae8d6b_amd64.deb
   roles:
-      - ansible-rclone
+      - rclone
   tasks:
     - name: Create a file called '/tmp/testfile.txt' with the content 'hello world'.
       copy:
