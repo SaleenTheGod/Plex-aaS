@@ -17,6 +17,7 @@
         name: "*"
         state: latest
       become: true
+
     - name: Ensure required packages are installed
       apt:
         name: "{{ item }}"
@@ -25,11 +26,13 @@
         - vim
         - aptitude
       become: true
+
     - name: Install plex debian file
       apt:
         deb: "{{ plex_ubuntu_deb_url }}"
         state: present
       become: true
+
     - name: Create a directory if it does not exist
       file:
         path: "{{ plex_mount_dir }}"
@@ -37,4 +40,13 @@
         mode: '0755'
         owner: "{{ plex_user_account_name }}"
         group: "{{ plex_user_account_name }}"
+      become: true
+
+    - name: Create a symbolic link for plexmediaserver to make it more user friendly #optional
+      file:
+        src: /lib/systemd/system/plexmediaserver.service
+        dest: /lib/systemd/system/plex.service
+        owner: root
+        group: root
+        state: link
       become: true
