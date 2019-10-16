@@ -1,0 +1,59 @@
+---
+- name: Gather OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - '{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml'
+    - '{{ ansible_distribution }}.yml'
+    - '{{ ansible_os_family }}.yml'
+  tags:
+    - vars
+
+- name: Update repositories cache on Ubuntu Xenial
+  apt:
+    update_cache: true
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
+
+- name: Ensure required packages are installed
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - vim
+    - aptitude
+  become: true
+
+- name: Make sure we have a 'wheel' group
+  group:
+    name=wheel
+    state=present
+  become: true
+
+- name: Add Unix Admins users
+  user:
+    name: "{{ item }}"
+    group: users
+    groups: wheel
+    password: "{{ local_unix_password }}"
+  loop:
+    - "{{ local_unix_user }}"
+  become: true
+
+- name: Allow wheel group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+  become: true
+
+- name: Add sudoers users to wheel group
+  user: name=deployer groups=wheel append=yes state=present createhome=yes
+  become: true
+
+- name: Disallow root SSH access
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^PermitRootLogin"
+              line="PermitRootLogin no"
+              state=present
+  become: true
+  notify: Restart ssh
