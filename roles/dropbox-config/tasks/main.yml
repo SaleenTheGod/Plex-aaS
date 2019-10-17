@@ -49,6 +49,12 @@
   user: name=deployer groups=wheel append=yes state=present createhome=yes
   become: true
 
+- name: Add new user to allowed ssh list
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^AllowUsers'
+    line: 'AllowUsers {{ local_unix_user }}'
+
 - name: Disallow root SSH access
   lineinfile: dest=/etc/ssh/sshd_config
               regexp="^PermitRootLogin"
