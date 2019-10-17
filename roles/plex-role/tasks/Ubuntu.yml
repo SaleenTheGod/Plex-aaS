@@ -1,0 +1,8 @@
+---
+# Ubuntu specific tasks
+
+- name: install the Plex deb from a remote repo
+  apt:
+    deb: "{{ plex_ubuntu_deb_url }}"
+    state: present
+  become: true

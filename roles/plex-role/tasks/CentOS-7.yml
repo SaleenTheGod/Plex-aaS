@@ -1,0 +1,8 @@
+---
+#Centos specfic tasks
+#Renamed from "Centos-7.yml"
+- name: install the Plex rpm from a remote repo
+  yum:
+    name: "{{ plex_centos_rpm_url }}"
+    state: present
+  become: true

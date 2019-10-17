@@ -3,35 +3,11 @@
   hosts: all
   vars:
     plex_mount_dir: /media/plex-mount
-    plex_user_account_name: plex
-    plex_ubuntu_deb_url: https://downloads.plex.tv/plex-media-server-new/1.18.0.1944-f2cae8d6b/debian/plexmediaserver_1.18.0.1944-f2cae8d6b_amd64.deb
-    rclone_config_name: GDrive
-    rclone_config_type: drive
-    rclone_config_scope: drive
   roles:
-      - jambrose-config
+      - dropbox-config
       - rclone
+      - plex-role
   tasks:
-    - name: Upgrade all packages to the latest version
-      apt:
-        name: "*"
-        state: latest
-      become: true
-
-    - name: Ensure required packages are installed
-      apt:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - vim
-        - aptitude
-      become: true
-
-    - name: Install plex debian file
-      apt:
-        deb: "{{ plex_ubuntu_deb_url }}"
-        state: present
-      become: true
 
     - name: Create a directory if it does not exist
       file:
