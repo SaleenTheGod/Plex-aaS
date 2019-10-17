@@ -1,0 +1,8 @@
+---
+#Fedora specific tasks
+
+- name: install the Plex rpm from a remote repo
+  dnf:
+    name: "{{ plex_fedora_rpm_url }}"
+    state: present
+  become: true

@@ -1,0 +1,8 @@
+---
+#Debian specfic tasks
+
+- name: install the Plex deb from a remote repo
+  apt:
+    deb: "{{ plex_debian_deb_url }}"
+    state: present
+  become: true
