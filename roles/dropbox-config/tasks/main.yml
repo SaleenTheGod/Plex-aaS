@@ -30,13 +30,11 @@
 
 - name: Add Unix Admins users
   user:
-    name: "{{ item }}"
+    name: "{{ local_unix_user }}"
     group: users
     groups: wheel
     shell: /bin/bash
     password: "{{ local_unix_password }}"
-  loop:
-    - "{{ local_unix_user }}"
   become: true
 
 - name: Allow wheel group to have passwordless sudo
