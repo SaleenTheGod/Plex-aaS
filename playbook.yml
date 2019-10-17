@@ -4,7 +4,7 @@
   vars:
     plex_mount_dir: /media/plex-mount
   roles:
-      - dropbox-config
+      - digitalocean-config
       - ansible-fail2ban
       - rclone
       - plex-role

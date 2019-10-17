@@ -22,6 +22,9 @@
     update_cache: true
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
 
+- name: Install DigitalOcean agent
+  shell: curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash #Bad coding practice...
+
 - name: Make sure we have a 'wheel' group
   group:
     name=wheel
