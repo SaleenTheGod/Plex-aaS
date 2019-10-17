@@ -8,19 +8,19 @@
   tags:
     - vars
 
+- name: Include OS Specific Tasks
+  include_tasks: "{{ item }}"
+  with_first_found:
+    - '{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml'
+    - '{{ ansible_distribution }}.yml'
+    - '{{ ansible_os_family }}.yml'
+  tags:
+    - vars
+
 - name: Update repositories cache on Ubuntu Xenial
   apt:
     update_cache: true
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
-
-# - name: Ensure required packages are installed
-#   apt:
-#     name: "{{ item }}"
-#     state: present
-#   loop:
-#     - vim
-#     - aptitude
-#   become: true
 
 - name: Make sure we have a 'wheel' group
   group:

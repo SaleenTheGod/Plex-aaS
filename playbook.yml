@@ -5,6 +5,7 @@
     plex_mount_dir: /media/plex-mount
   roles:
       - dropbox-config
+      - ansible-fail2ban
       - rclone
       - plex-role
   tasks:
