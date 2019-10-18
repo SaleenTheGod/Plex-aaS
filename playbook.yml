@@ -3,8 +3,10 @@
   hosts: all
   vars:
     plex_mount_dir: /media/plex-mount
+    vm_is_in_digitalocean: false
   roles:
-      - dropbox-config
+      - digitalocean-config
+      - ansible-fail2ban
       - rclone
       - plex-role
   tasks:
@@ -26,3 +28,9 @@
         group: root
         state: link
       become: true
+
+    - name: Ensure the plex user exists and uses the bash shell
+      user:
+        name: "{{ plex_user_account_name }}"
+        shell: /bin/bash
+        state: present

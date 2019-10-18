@@ -1,0 +1,7 @@
+---
+#Centos specfic tasks
+- name: Ensure EPEL is installed
+  yum:
+    name: "epel-release"
+    state: present
+  become: true

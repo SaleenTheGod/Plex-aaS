@@ -8,19 +8,23 @@
   tags:
     - vars
 
+- name: Include OS Specific Tasks
+  include_tasks: "{{ item }}"
+  with_first_found:
+    - '{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml'
+    - '{{ ansible_distribution }}.yml'
+    - '{{ ansible_os_family }}.yml'
+  tags:
+    - vars
+
 - name: Update repositories cache on Ubuntu Xenial
   apt:
     update_cache: true
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
 
-# - name: Ensure required packages are installed
-#   apt:
-#     name: "{{ item }}"
-#     state: present
-#   loop:
-#     - vim
-#     - aptitude
-#   become: true
+- name: Install DigitalOcean agent
+  shell: curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash #Bad coding practice...
+  when: vm_is_in_digitalocean == true
 
 - name: Make sure we have a 'wheel' group
   group:
@@ -46,7 +50,19 @@
   become: true
 
 - name: Add sudoers users to wheel group
-  user: name=deployer groups=wheel append=yes state=present createhome=yes
+  user:
+    name: "{{ local_unix_user }}"
+    groups: wheel
+    append: yes
+    state: present
+    createhome: yes
+  become: true
+
+- name: Add new user to allowed ssh list
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^AllowUsers'
+    line: 'AllowUsers {{ local_unix_user }}'
   become: true
 
 - name: Disallow root SSH access
