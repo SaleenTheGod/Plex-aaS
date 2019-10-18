@@ -6,3 +6,9 @@
     name: "{{ plex_centos_rpm_url }}"
     state: present
   become: true
+
+- name: install the Plex rpm from a remote repo
+  yum:
+    name: "sshfs"
+    state: present
+  become: true

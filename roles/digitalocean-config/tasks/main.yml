@@ -24,6 +24,7 @@
 
 - name: Install DigitalOcean agent
   shell: curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash #Bad coding practice...
+  when: vm_is_in_digitalocean == true
 
 - name: Make sure we have a 'wheel' group
   group:
@@ -49,7 +50,12 @@
   become: true
 
 - name: Add sudoers users to wheel group
-  user: name=deployer groups=wheel append=yes state=present createhome=yes
+  user:
+    name: "{{ local_unix_user }}"
+    groups: wheel
+    append: yes
+    state: present
+    createhome: yes
   become: true
 
 - name: Add new user to allowed ssh list
@@ -57,6 +63,7 @@
     dest: /etc/ssh/sshd_config
     regexp: '^AllowUsers'
     line: 'AllowUsers {{ local_unix_user }}'
+  become: true
 
 - name: Disallow root SSH access
   lineinfile: dest=/etc/ssh/sshd_config

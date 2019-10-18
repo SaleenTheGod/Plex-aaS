@@ -1,8 +1,9 @@
 ---
 - name: Plex-aaS/PMSaaS. Install Plex as a Service on a Linux Machine!
-  hosts: localhost
+  hosts: all
   vars:
     plex_mount_dir: /media/plex-mount
+    vm_is_in_digitalocean: false
   roles:
       - digitalocean-config
       - ansible-fail2ban
@@ -28,7 +29,7 @@
         state: link
       become: true
 
-    - name: Add the user 'james' with a bash shell, appending the group 'admins' and 'developers' to the user's groups
+    - name: Ensure the plex user exists and uses the bash shell
       user:
         name: "{{ plex_user_account_name }}"
         shell: /bin/bash
