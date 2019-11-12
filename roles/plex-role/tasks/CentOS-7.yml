@@ -1,13 +1,13 @@
 ---
 #Centos specfic tasks
 #Renamed from "Centos-7.yml"
-- name: install the Plex rpm from a remote repo
+- name: Ensure Plex is present via YUM
   yum:
     name: "{{ plex_centos_rpm_url }}"
     state: present
   become: true
 
-- name: install the Plex rpm from a remote repo
+- name: Ensure ssfs is present via YUM
   yum:
     name: "sshfs"
     state: present
