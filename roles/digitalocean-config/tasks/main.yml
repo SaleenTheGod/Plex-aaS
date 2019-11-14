@@ -39,6 +39,7 @@
     groups: wheel
     shell: /bin/bash
     password: "{{ local_unix_password }}"
+    update_password: on_create
   become: true
 
 - name: Allow wheel group to have passwordless sudo
