@@ -26,10 +26,14 @@
   shell: curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash #Bad coding practice...
   when: vm_is_in_digitalocean == true
 
-- name: Make sure we have a 'wheel' group
+- name: Ensure required pip packages are installed
+  pip:
+    name: passlib
+
+- name: Ensure we have a 'wheel' group
   group:
-    name=wheel
-    state=present
+    name: wheel
+    state: present
   become: true
 
 - name: Add Unix Admins users
@@ -40,6 +44,7 @@
     shell: /bin/bash
     password: "{{ local_unix_password }}"
     update_password: on_create
+    state: present
   become: true
 
 - name: Allow wheel group to have passwordless sudo
