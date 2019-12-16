@@ -17,9 +17,9 @@ Vagrant.configure("2") do |config|
   # config.vm.box = "debian/jessie64"
 
   # Running the Ansible Code/Playbook
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "playbook.yml"
-  end
+  # config.vm.provision "ansible" do |ansible|
+  #   ansible.playbook = "playbook.yml"
+  # end
 
 
   # config.vm.provision "shell", inline: <<-SHELL

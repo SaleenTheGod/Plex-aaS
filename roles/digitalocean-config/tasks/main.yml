@@ -26,9 +26,27 @@
   shell: curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash #Bad coding practice...
   when: vm_is_in_digitalocean == true
 
+- name: Check if User creation breadcrumb exists
+  stat:
+    path: "/home/{{ local_unix_user }}/.plexaas-user-breadcrumb"
+  register: plexaas-user-breadcrumb
+
+- name: Ensure plexaas-user-breadcrumb exists
+  file:
+    path: "/home/{{ local_unix_user }}/.plexaas-user-breadcrumb"
+    state: touch
+  when: plexaas-user-breadcrumb.stat.exists == false
+
+- name: Ensure Pip is installed
+  easy_install:
+    name: pip
+    state: present
+  become: true
+
 - name: Ensure required pip packages are installed
   pip:
     name: passlib
+  become: true
 
 - name: Ensure we have a 'wheel' group
   group:
@@ -46,6 +64,7 @@
     update_password: on_create
     state: present
   become: true
+  when: plexaas-user-breadcrumb.stat.exists == false
 
 - name: Allow wheel group to have passwordless sudo
   lineinfile:
@@ -72,9 +91,10 @@
   become: true
 
 - name: Disallow root SSH access
-  lineinfile: dest=/etc/ssh/sshd_config
-              regexp="^PermitRootLogin"
-              line="PermitRootLogin no"
-              state=present
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+    state: present
   become: true
   notify: Restart ssh
