@@ -3,7 +3,7 @@
   hosts: all
   vars:
     plex_mount_dir: /media/plex-mount
-    vm_is_in_digitalocean: false
+    vm_is_in_digitalocean: false ##Change to true if Virtual Machine is in Digital Ocean.
   roles:
       - digitalocean-config
       - ansible-fail2ban

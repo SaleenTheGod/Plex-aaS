@@ -2,6 +2,8 @@
 # Variables for all OS types
 
 local_unix_user: jjambrose1s #Your desired username here
-local_unix_password: $6$changemepls123$2RIG8JuLywr6wDgs0jBHBIvcIuA70P0FDAUCFaP3ordl5lkM0OskSr6YExRtMeIs41kQErbkLb9l/UeUf3/yu1 #your desired password here (might want to use ansible-vault!)
+
+
 # Generate a Hashed password following this link: https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-encrypted-passwords-for-the-user-module
 # I used this command: ansible all -i localhost, -m debug -a "msg={{ 'mypassword' | password_hash('sha512', 'changemepls123') }}"
+local_unix_password: $6$changemepls123$2RIG8JuLywr6wDgs0jBHBIvcIuA70P0FDAUCFaP3ordl5lkM0OskSr6YExRtMeIs41kQErbkLb9l/UeUf3/yu1  #your desired password here (might want to use ansible-vault!)
