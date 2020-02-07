@@ -17,14 +17,15 @@ Vagrant.configure("2") do |config|
   # config.vm.box = "debian/jessie64"
 
   # Running the Ansible Code/Playbook
-  # config.vm.provision "ansible" do |ansible|
-  #   ansible.playbook = "playbook.yml"
-  # end
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "playbook.yml"
+  end
 
-
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   # sudo apt-get update -y
-  #   # sudo apt-get install -y vim
-  #   # sudo curl https://rclone.org/install.sh | sudo bash
-  # SHELL
+  # config.ssh.password = "myBadPassword"
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo yum update -y
+    sudo yum install -y epel-release vim python-pip
+    sudo pip install ansible
+    # sudo curl https://rclone.org/install.sh | sudo bash
+  SHELL
 end

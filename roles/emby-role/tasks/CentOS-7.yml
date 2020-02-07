@@ -1,0 +1,22 @@
+---
+#Centos specfic tasks
+#Renamed from "Centos-7.yml"
+
+- name: Download Emby RPM
+  get_url:
+    
+
+- name: Ensure Emby & ssfs are present via YUM
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ emby_centos_rpm_url }}"
+    - "sshfs"
+  become: true
+
+# - name: Ensure ssfs is present via YUM
+#   yum:
+#     name: "sshfs"
+#     state: present
+#   become: true

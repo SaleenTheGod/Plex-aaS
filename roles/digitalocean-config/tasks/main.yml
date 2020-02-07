@@ -30,6 +30,7 @@
   stat:
     path: "/home/{{ local_unix_user }}/.plexaas-user-breadcrumb"
   register: plexaas_user_breadcrumb
+  become: true
 
 - name: Ensure Pip is installed
   easy_install:
@@ -64,6 +65,7 @@
   file:
     path: "/home/{{ local_unix_user }}/.plexaas-user-breadcrumb"
     state: touch
+  become: true
   when: plexaas_user_breadcrumb.stat.exists == false
 
 - name: Allow wheel group to have passwordless sudo

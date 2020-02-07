@@ -1,36 +1,37 @@
 ---
-- name: Plex-aaS/PMSaaS. Install Plex as a Service on a Linux Machine!
+- name: "Emby as a Service! Installs Emby as a service on a linux machine."
   hosts: all
+  connection: local
   vars:
-    plex_mount_dir: /media/plex-mount
+    emby_mount_dir: /media/emby-mount
     vm_is_in_digitalocean: false ##Change to true if Virtual Machine is in Digital Ocean.
   roles:
       - digitalocean-config
       - ansible-fail2ban
       - rclone
-      - plex-role
-  tasks:
+      - emby-role
+  # tasks:
 
-    - name: Create a directory if it does not exist
-      file:
-        path: "{{ plex_mount_dir }}"
-        state: directory
-        mode: '0755'
-        owner: "{{ plex_user_account_name }}"
-        group: "{{ plex_user_account_name }}"
-      become: true
+    # - name: Create a directory if it does not exist
+    #   file:
+    #     path: "{{ emby_mount_dir }}"
+    #     state: directory
+    #     mode: '0755'
+    #     owner: "{{ plex_user_account_name }}"
+    #     group: "{{ plex_user_account_name }}"
+    #   become: true
 
-    - name: Create a symbolic link for plexmediaserver to make it more user friendly #optional
-      file:
-        src: /lib/systemd/system/plexmediaserver.service
-        dest: /lib/systemd/system/plex.service
-        owner: root
-        group: root
-        state: link
-      become: true
+    # - name: Create a symbolic link for plexmediaserver to make it more user friendly #optional
+    #   file:
+    #     src: /lib/systemd/system/plexmediaserver.service
+    #     dest: /lib/systemd/system/plex.service
+    #     owner: root
+    #     group: root
+    #     state: link
+    #   become: true
 
-    - name: Ensure the plex user exists and uses the bash shell
-      user:
-        name: "{{ plex_user_account_name }}"
-        shell: /bin/bash
-        state: present
+    # - name: Ensure the plex user exists and uses the bash shell
+    #   user:
+    #     name: "{{ plex_user_account_name }}"
+    #     shell: /bin/bash
+    #     state: present
