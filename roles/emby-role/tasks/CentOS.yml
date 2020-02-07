@@ -12,7 +12,6 @@
     state: present
   loop:
     - "{{ emby_centos_rpm_url }}"
-    - "sshfs"
   become: true
 
 # - name: Ensure ssfs is present via YUM
