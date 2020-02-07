@@ -1,5 +1,5 @@
 ---
-# - name: Restart ssh
-#   service:
-#     name: "sshd"
-#     state: restarted
+- name: restart emby
+  service:
+    name: '{{ emby_service }}'
+    state: restarted
