@@ -28,6 +28,7 @@
   stat:
     path: "/home/{{ emby_user }}/.emby_usr_breadcrumb"
   register: emby_usr_breadcrumb
+  ignore_errors: truecombi
   become: true
 
 - name: Ensure we have a 'wheel' group
