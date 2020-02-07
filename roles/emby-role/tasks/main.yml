@@ -1,4 +1,11 @@
 ---
+
+- name: Ensure the plex user exists and uses the bash shell
+  user:
+    name: "{{ emby_user }}"
+    shell: /bin/bash
+    state: present
+
 - name: Gather OS specific variables
   include_vars: "{{ item }}"
   with_first_found:

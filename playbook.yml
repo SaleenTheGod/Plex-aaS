@@ -10,28 +10,16 @@
       - ansible-fail2ban
       - rclone
       - emby-role
-  # tasks:
+  tasks:
 
-    # - name: Create a directory if it does not exist
-    #   file:
-    #     path: "{{ emby_mount_dir }}"
-    #     state: directory
-    #     mode: '0755'
-    #     owner: "{{ plex_user_account_name }}"
-    #     group: "{{ plex_user_account_name }}"
-    #   become: true
-
-    # - name: Create a symbolic link for plexmediaserver to make it more user friendly #optional
-    #   file:
-    #     src: /lib/systemd/system/plexmediaserver.service
-    #     dest: /lib/systemd/system/plex.service
-    #     owner: root
-    #     group: root
-    #     state: link
-    #   become: true
-
-    # - name: Ensure the plex user exists and uses the bash shell
-    #   user:
-    #     name: "{{ plex_user_account_name }}"
-    #     shell: /bin/bash
-    #     state: present
+    - name: Create a directory if it does not exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ emby_user }}"
+        group: "{{ emby_group }}"
+      loop:
+        - "{{ emby_logs }}"
+        - "{{ emby_mount_dir }}"
+      become: true
