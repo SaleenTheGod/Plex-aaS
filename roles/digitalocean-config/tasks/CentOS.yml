@@ -1,7 +1,10 @@
 ---
 #Centos specfic tasks
-- name: Ensure EPEL is installed
+- name: Ensure Required files are installed
   yum:
-    name: "epel-release"
+    name: "{{ item }}"
     state: present
+  loop:
+    - "epel-release"
+    - "virtualenv"
   become: true
