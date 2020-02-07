@@ -14,6 +14,16 @@
     - "{{ emby_centos_rpm_url }}"
   become: true
 
+- name: Update {{ emby_service }} configuration file
+  become: true
+  template:
+    src: etc/emby-server.conf.j2
+    dest: /etc/emby-server.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart emby
+
 # - name: Ensure ssfs is present via YUM
 #   yum:
 #     name: "sshfs"
