@@ -26,7 +26,7 @@
 
 - name: Check if User creation breadcrumb exists
   stat:
-    path: "/home/{{ emby_user }}/.emby_usr_breadcrumb"
+    path: "/var/lib/emby/.emby_usr_breadcrumb"
   register: emby_usr_breadcrumb
   ignore_errors: true
   become: true
@@ -51,7 +51,7 @@
 
 - name: Ensure emby_usr_breadcrumb exists
   file:
-    path: "/home/{{ emby_user }}/.emby_usr_breadcrumb"
+    path: "/var/lib/emby/.emby_usr_breadcrumb"
     state: touch
   become: true
   when: emby_usr_breadcrumb.stat.exists == false
