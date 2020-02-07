@@ -20,6 +20,7 @@
         owner: "{{ emby_user }}"
         group: "{{ emby_group }}"
       loop:
+        - "{{ emby_data }}"
         - "{{ emby_logs }}"
         - "{{ emby_mount_dir }}"
       become: true
