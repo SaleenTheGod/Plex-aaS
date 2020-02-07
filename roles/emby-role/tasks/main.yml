@@ -23,3 +23,58 @@
     - '{{ ansible_os_family }}.yml'
   tags:
     - vars
+
+- name: Check if User creation breadcrumb exists
+  stat:
+    path: "/home/{{ emby_user }}/.emby-usr-breadcrumb"
+  register: emby-usr-breadcrumb
+  become: true
+
+- name: Ensure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+  become: true
+
+- name: Add Unix Admins users
+  user:
+    name: "{{ emby_user }}"
+    group: users
+    groups: wheel
+    shell: /bin/bash
+    password: "{{ local_unix_password }}"
+    update_password: on_create
+    state: present
+  become: true
+  when: emby-usr-breadcrumb.stat.exists == false
+
+- name: Ensure emby-usr-breadcrumb exists
+  file:
+    path: "/home/{{ emby_user }}/.emby-usr-breadcrumb"
+    state: touch
+  become: true
+  when: emby-usr-breadcrumb.stat.exists == false
+
+- name: Allow wheel group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+  become: true
+
+- name: Add sudoers users to wheel group
+  user:
+    name: "{{ local_unix_user }}"
+    groups: wheel
+    append: yes
+    state: present
+    createhome: yes
+  become: true
+
+- name: Add new user to allowed ssh list
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^AllowUsers'
+    line: 'AllowUsers {{ local_unix_user }}'
+  become: true
