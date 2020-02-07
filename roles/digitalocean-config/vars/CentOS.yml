@@ -8,3 +8,5 @@ MAN_PAGES:
   OWNER: root
   GROUP: root
   PATH: '/usr/local/share/man/man1'
+
+easy_install_executable: easy_install-2.7

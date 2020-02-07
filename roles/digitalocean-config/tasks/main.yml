@@ -36,6 +36,7 @@
   easy_install:
     name: pip
     state: present
+    executable: easy_install_executable
   become: true
 
 - name: Ensure required pip packages are installed
