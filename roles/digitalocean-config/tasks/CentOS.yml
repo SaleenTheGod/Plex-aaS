@@ -6,5 +6,5 @@
     state: present
   loop:
     - "epel-release"
-    - "virtualenv"
+    # - "virtualenv"
   become: true
