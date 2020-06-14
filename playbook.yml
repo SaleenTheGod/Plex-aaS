@@ -6,7 +6,7 @@
     vm_is_in_digitalocean: false ##Change to true if Virtual Machine is in Digital Ocean.
   roles:
       - digitalocean-config
-      - ansible-fail2ban
+      # - ansible-fail2ban
       - rclone
       - plex-role
   tasks:

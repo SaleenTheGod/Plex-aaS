@@ -22,79 +22,79 @@
     update_cache: true
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
 
-- name: Install DigitalOcean agent
-  shell: curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash #Bad coding practice...
-  when: vm_is_in_digitalocean == true
+# - name: Install DigitalOcean agent
+#   shell: curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash #Bad coding practice...
+#   when: vm_is_in_digitalocean == true
 
-- name: Check if User creation breadcrumb exists
-  stat:
-    path: "/home/{{ local_unix_user }}/.plexaas-user-breadcrumb"
-  register: plexaas_user_breadcrumb
+# - name: Check if User creation breadcrumb exists
+#   stat:
+#     path: "/home/{{ local_unix_user }}/.plexaas-user-breadcrumb"
+#   register: plexaas_user_breadcrumb
 
-- name: Ensure Pip is installed
-  easy_install:
-    name: pip
-    state: present
-  become: true
+# - name: Ensure Pip is installed
+#   easy_install:
+#     name: pip
+#     state: present
+#   become: true
 
-- name: Ensure required pip packages are installed
-  pip:
-    name: passlib
-  become: true
+# - name: Ensure required pip packages are installed
+#   pip:
+#     name: passlib
+#   become: true
 
-- name: Ensure we have a 'wheel' group
-  group:
-    name: wheel
-    state: present
-  become: true
+# # - name: Ensure we have a 'wheel' group
+# #   group:
+# #     name: wheel
+# #     state: present
+# #   become: true
 
-- name: Add Unix Admins users
-  user:
-    name: "{{ local_unix_user }}"
-    group: users
-    groups: wheel
-    shell: /bin/bash
-    password: "{{ local_unix_password }}"
-    update_password: on_create
-    state: present
-  become: true
-  when: plexaas_user_breadcrumb.stat.exists == false
+# # - name: Add Unix Admins users
+# #   user:
+# #     name: "{{ local_unix_user }}"
+# #     group: users
+# #     groups: wheel
+# #     shell: /bin/bash
+# #     password: "{{ local_unix_password }}"
+# #     update_password: on_create
+# #     state: present
+# #   become: true
+# #   when: plexaas_user_breadcrumb.stat.exists == false
 
-- name: Ensure plexaas-user-breadcrumb exists
-  file:
-    path: "/home/{{ local_unix_user }}/.plexaas-user-breadcrumb"
-    state: touch
-  when: plexaas_user_breadcrumb.stat.exists == false
+# # - name: Ensure plexaas-user-breadcrumb exists
+# #   file:
+# #     path: "/home/{{ local_unix_user }}/.plexaas-user-breadcrumb"
+# #     state: touch
+# #   when: plexaas_user_breadcrumb.stat.exists == false
 
-- name: Allow wheel group to have passwordless sudo
-  lineinfile:
-    dest: /etc/sudoers
-    state: present
-    regexp: '^%wheel'
-    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
-  become: true
+# - name: Allow wheel group to have passwordless sudo
+#   lineinfile:
+#     dest: /etc/sudoers
+#     state: present
+#     regexp: '^%wheel'
+#     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+#   become: true
 
-- name: Add sudoers users to wheel group
-  user:
-    name: "{{ local_unix_user }}"
-    groups: wheel
-    append: yes
-    state: present
-    createhome: yes
-  become: true
+# - name: Add sudoers users to wheel group
+#   user:
+#     name: "{{ local_unix_user }}"
+#     groups: wheel
+#     append: yes
+#     state: present
+#     createhome: yes
+#   become: true
 
-- name: Add new user to allowed ssh list
-  lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: '^AllowUsers'
-    line: 'AllowUsers {{ local_unix_user }}'
-  become: true
+# - name: Add new user to allowed ssh list
+#   lineinfile:
+#     dest: /etc/ssh/sshd_config
+#     regexp: '^AllowUsers'
+#     line: 'AllowUsers {{ local_unix_user }}'
+#   become: true
 
-- name: Disallow root SSH access
-  lineinfile: 
-    dest: /etc/ssh/sshd_config
-    regexp: "^PermitRootLogin"
-    line: "PermitRootLogin no"
-    state: present
-  become: true
-  notify: Restart ssh
+# - name: Disallow root SSH access
+#   lineinfile: 
+#     dest: /etc/ssh/sshd_config
+#     regexp: "^PermitRootLogin"
+#     line: "PermitRootLogin no"
+#     state: present
+#   become: true
+#   notify: Restart ssh
